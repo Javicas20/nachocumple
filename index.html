@@ -37,6 +37,26 @@
     font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--oro);
   }
 
+  /* ---------- CARGA: GATITOS ---------- */
+  #carga{
+    position:fixed;inset:0;z-index:29;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    background:inherit;background-color:var(--marfil);transition:opacity .9s ease;
+  }
+  #carga.fuera{opacity:0;pointer-events:none}
+  #gatos{width:min(78vw,320px);overflow:visible}
+  .acerca-izq{animation:acercaIzq 2.6s ease-in-out infinite}
+  .acerca-der{animation:acercaDer 2.6s ease-in-out infinite}
+  @keyframes acercaIzq{0%,15%,85%,100%{transform:translateX(0)}40%,62%{transform:translateX(9px)}}
+  @keyframes acercaDer{0%,15%,85%,100%{transform:translateX(0)}40%,62%{transform:translateX(-9px)}}
+  .cola-izq,.cola-der{animation:cola 1.3s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:100% 100%}
+  .cola-der{animation-delay:-.6s}
+  @keyframes cola{from{transform:rotate(-6deg)}to{transform:rotate(10deg)}}
+  .besito{opacity:0;transform-box:fill-box;transform-origin:50% 100%;animation:besito 2.6s ease-out infinite}
+  @keyframes besito{0%,42%{opacity:0;transform:translateY(6px) scale(.4)}50%{opacity:1;transform:translateY(0) scale(1)}80%{opacity:0;transform:translateY(-22px) scale(1.1)}100%{opacity:0}}
+  .texto-carga{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:var(--burdeos)}
+  .barra{width:120px;height:2px;background:rgba(176,141,87,.25);overflow:hidden;border-radius:2px}
+  .barra i{display:block;height:100%;width:0;background:var(--oro);transition:width .4s ease}
+
   /* ---------- PANTALLA 1 ---------- */
   #mensaje{
     font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
@@ -176,6 +196,13 @@
 </style>
 </head>
 <body>
+
+<!-- ========== CARGA ========== -->
+<div id="carga">
+  <svg id="gatos" viewBox="0 0 200 120" aria-label="Dos gatitos dándose un beso"></svg>
+  <div class="texto-carga">Preparando algo bonito…</div>
+  <div class="barra"><i id="progreso"></i></div>
+</div>
 
 <!-- ========== PANTALLA 1 ========== -->
 <section id="p1" class="pantalla">
@@ -346,8 +373,54 @@ function ajustarCorazon(){
 ajustarCorazon();
 addEventListener("resize", ajustarCorazon);
 
-// Precarga de las fotos para que estén listas al llegar
-CONFIG.fotos.forEach(f => { const i = new Image(); i.src = f; });
+// ---------- Gatitos ----------
+function gato(c){
+  // c: {cuerpo, oscuro, rayas}
+  const rayas = c.rayas ? `
+      <path d="M44 25 l2 6 M50 23 l0 6 M56 25 l-2 6" stroke="${c.oscuro}" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M18 70 q6 4 4 10 M26 62 q6 4 4 10" stroke="${c.oscuro}" stroke-width="2.4" stroke-linecap="round" fill="none"/>` : "";
+  return `
+    <path class="${c.claseCola}" d="M12 92 C-6 88 -6 60 8 58" stroke="${c.cuerpo}" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <ellipse cx="32" cy="80" rx="26" ry="21" fill="${c.cuerpo}"/>
+    <ellipse cx="38" cy="99" rx="7" ry="4" fill="${c.oscuro}"/>
+    <ellipse cx="54" cy="98" rx="7" ry="4" fill="${c.oscuro}"/>
+    <path d="M35 34 L37 10 L52 24 Z" fill="${c.cuerpo}"/>
+    <path d="M54 23 L68 10 L68 34 Z" fill="${c.cuerpo}"/>
+    <path d="M39 28 L40 16 L48 24 Z" fill="#e9a3a8"/>
+    <path d="M58 23 L65 16 L65 29 Z" fill="#e9a3a8"/>
+    <circle cx="52" cy="42" r="20" fill="${c.cuerpo}"/>${rayas}
+    <path d="M54 40 q4 3.5 8 0" stroke="#3a2a26" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <ellipse cx="60" cy="50" rx="4.5" ry="2.6" fill="#e9a3a8" opacity=".7"/>
+    <path d="M69 45 l2.5 1.5 l-2.5 1.5 z" fill="#c9737b"/>
+    <path d="M66 52 q3 2 5 0" stroke="#3a2a26" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    <path d="M62 47 l-12 -2 M62 50 l-12 1" stroke="#fff" stroke-opacity=".6" stroke-width=".8"/>`;
+}
+$("gatos").innerHTML = `
+  <ellipse cx="100" cy="112" rx="80" ry="4" fill="#b08d57" opacity=".15"/>
+  <g transform="translate(22,8)"><g class="acerca-izq">${gato({cuerpo:"#8e9096", oscuro:"#6f7177", claseCola:"cola-izq"})}</g></g>
+  <g transform="translate(178,8) scale(-1,1)"><g class="acerca-izq">${gato({cuerpo:"#e8954a", oscuro:"#c8742c", rayas:true, claseCola:"cola-der"})}</g></g>
+  <path class="besito" d="M100 30 C93 24 88 20 88 15 C88 11 91 9 94 9 C97 9 99 11 100 13 C101 11 103 9 106 9 C109 9 112 11 112 15 C112 20 107 24 100 30Z" fill="#7a1f2b"/>`;
+
+// ---------- Carga de fotos ----------
+function cargarFoto(src){
+  return new Promise(res => {
+    const i = new Image();
+    i.onload = () => (i.decode ? i.decode().catch(()=>{}) : Promise.resolve()).then(res);
+    i.onerror = res;
+    i.src = src;
+  });
+}
+let hechas = 0;
+const tareas = CONFIG.fotos.map(f => cargarFoto(f).then(() => {
+  hechas++; $("progreso").style.width = (hechas / CONFIG.fotos.length * 100) + "%";
+}));
+const minimo = new Promise(r => setTimeout(r, 2600));          // que se vea la animación
+const limite = new Promise(r => setTimeout(r, 15000));         // por si la conexión va fatal
+const fuentes = document.fonts ? document.fonts.ready : Promise.resolve();
+Promise.race([Promise.all([...tareas, fuentes, minimo]), limite]).then(() => {
+  $("carga").classList.add("fuera");
+  setTimeout(() => $("carga").remove(), 1000);
+});
 
 function irAPantalla2(){
   $("p1").classList.add("oculta");
