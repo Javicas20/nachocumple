@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>💗 Para ti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rosa:#ff4d7d; --rosa-osc:#e0245e; --crema:#fff6ef; --papel:#fffdf8;
+    --sobre:#f7c9d4; --sobre-osc:#eeb0c0; --texto:#5a2a3a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow:hidden}
+  body{
+    font-family:'Quicksand',sans-serif;color:var(--texto);
+    background:radial-gradient(circle at 50% 30%,#ffe3ec 0%,#ffc2d4 55%,#ff9fbb 100%);
+    user-select:none;-webkit-user-select:none;
+  }
+  .pantalla{
+    position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px;transition:opacity .8s ease,transform .8s ease;
+  }
+  .oculta{opacity:0;pointer-events:none;transform:scale(1.05)}
+
+  /* ---------- PANTALLA 1: CORAZÓN ---------- */
+  #mensaje{
+    font-family:'Dancing Script',cursive;font-size:clamp(28px,8vw,42px);color:var(--rosa-osc);
+    text-align:center;min-height:2.6em;display:flex;align-items:center;justify-content:center;
+    margin-bottom:28px;padding:0 10px;
+  }
+  #mensaje.pop{animation:pop .45s ease}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+
+  #corazon{
+    width:min(62vw,280px);cursor:pointer;filter:drop-shadow(0 12px 24px rgba(224,36,94,.45));
+    animation:latido 1.2s ease-in-out infinite;transition:width .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  #corazon.golpe{animation:golpe .35s ease}
+  @keyframes latido{0%,100%{transform:scale(1)}15%{transform:scale(1.08)}30%{transform:scale(.98)}45%{transform:scale(1.05)}}
+  @keyframes golpe{0%{transform:scale(1)}40%{transform:scale(.82)}100%{transform:scale(1)}}
+  #corazon.explota{animation:explota .9s ease forwards}
+  @keyframes explota{0%{transform:scale(1)}30%{transform:scale(.8)}100%{transform:scale(6);opacity:0}}
+
+  #puntos{display:flex;gap:10px;margin-top:34px}
+  #puntos span{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.7);transition:.3s}
+  #puntos span.on{background:var(--rosa);transform:scale(1.25)}
+  .pista{margin-top:18px;font-size:14px;opacity:.7}
+
+  .mini{
+    position:fixed;pointer-events:none;font-size:22px;z-index:5;
+    animation:sube 1.4s ease-out forwards;
+  }
+  @keyframes sube{
+    0%{transform:translate(0,0) scale(.4);opacity:1}
+    100%{transform:translate(var(--dx),var(--dy)) scale(1.2) rotate(var(--rot));opacity:0}
+  }
+
+  /* ---------- PANTALLA 2: FOTO + SOBRE ---------- */
+  #p2{justify-content:space-evenly;padding:28px 20px 34px}
+  .polaroid{
+    background:#fff;padding:12px 12px 46px;border-radius:4px;transform:rotate(-3deg);
+    box-shadow:0 14px 30px rgba(90,42,58,.25);position:relative;
+    width:min(74vw,320px);
+  }
+  .polaroid img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;background:#f3dfe5}
+  .polaroid .pie{
+    position:absolute;left:0;right:0;bottom:8px;text-align:center;
+    font-family:'Dancing Script',cursive;font-size:26px;color:var(--rosa-osc);
+  }
+  .cinta{
+    position:absolute;top:-14px;left:50%;width:90px;height:28px;transform:translateX(-50%) rotate(4deg);
+    background:rgba(255,255,255,.55);box-shadow:0 2px 4px rgba(0,0,0,.08);
+  }
+  #p2 .polaroid{opacity:0;transform:translateY(-30px) rotate(-3deg)}
+  #p2.visible .polaroid{animation:caePolaroid .9s .2s cubic-bezier(.34,1.56,.64,1) forwards}
+  @keyframes caePolaroid{to{opacity:1;transform:translateY(0) rotate(-3deg)}}
+
+  /* Sobre */
+  .zona-sobre{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .sobre{
+    position:relative;width:min(72vw,280px);aspect-ratio:3/2;cursor:pointer;perspective:900px;
+    opacity:0;transform:translateY(40px);
+  }
+  #p2.visible .sobre{animation:subeSobre .9s .6s ease forwards}
+  @keyframes subeSobre{to{opacity:1;transform:translateY(0)}}
+  .sobre.tiembla{animation:tiembla 2.4s ease-in-out infinite !important;opacity:1;transform:none}
+  @keyframes tiembla{0%,80%,100%{transform:rotate(0)}84%{transform:rotate(-4deg)}88%{transform:rotate(4deg)}92%{transform:rotate(-3deg)}96%{transform:rotate(2deg)}}
+
+  .sobre .fondo{position:absolute;inset:0;background:var(--sobre-osc);border-radius:6px;box-shadow:0 12px 26px rgba(90,42,58,.25)}
+  .sobre .carta{
+    position:absolute;left:7%;right:7%;top:8%;height:84%;background:var(--papel);border-radius:4px;
+    box-shadow:0 2px 6px rgba(0,0,0,.1);z-index:2;transition:transform .9s cubic-bezier(.5,0,.3,1) .45s;
+    display:flex;align-items:flex-start;justify-content:center;padding-top:14%;
+    font-family:'Dancing Script',cursive;font-size:22px;color:var(--rosa-osc);
+  }
+  .sobre .frente{
+    position:absolute;inset:0;border-radius:0 0 6px 6px;z-index:3;background:var(--sobre);
+    clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%);
+  }
+  .sobre .frente::before,.sobre .frente::after{content:"";position:absolute;inset:0}
+  .sobre .frente::before{background:#f2bfcc;clip-path:polygon(0 0,50% 56%,0 100%)}
+  .sobre .frente::after{background:#f9d3dc;clip-path:polygon(0 100%,50% 48%,100% 100%)}
+  .sobre .solapa{
+    position:absolute;left:0;right:0;top:0;height:58%;z-index:4;transform-origin:top;
+    background:#f3bccb;clip-path:polygon(0 0,100% 0,50% 100%);
+    transition:transform .6s ease, z-index 0s .3s;
+  }
+  .sobre .sello{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;font-size:34px;
+    transition:opacity .25s;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2));
+  }
+  .sobre.abierto .solapa{transform:rotateX(180deg);z-index:1}
+  .sobre.abierto .sello{opacity:0}
+  .sobre.abierto .carta{transform:translateY(-62%)}
+  .sobre.abierto{animation:none !important;opacity:1;transform:none}
+  .toca{font-size:15px;opacity:.75;transition:opacity .3s}
+
+  /* Carta a pantalla completa */
+  #lectura{
+    position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:22px;
+    background:rgba(90,42,58,.35);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+    opacity:0;pointer-events:none;transition:opacity .5s;
+  }
+  #lectura.visible{opacity:1;pointer-events:auto}
+  .hoja{
+    background:var(--papel);width:min(92vw,460px);max-height:84vh;overflow-y:auto;border-radius:8px;
+    padding:34px 26px 28px;box-shadow:0 20px 50px rgba(0,0,0,.3);position:relative;
+    background-image:repeating-linear-gradient(transparent 0 33px,#f6dbe3 33px 34px);
+    transform:scale(.6) translateY(80px);transition:transform .6s cubic-bezier(.34,1.4,.64,1);
+    user-select:text;-webkit-user-select:text;
+  }
+  #lectura.visible .hoja{transform:scale(1) translateY(0)}
+  .hoja h2{font-family:'Dancing Script',cursive;font-size:34px;color:var(--rosa-osc);margin-bottom:14px;line-height:1.1}
+  .hoja p{font-size:17px;line-height:34px;white-space:pre-line}
+  .hoja .firma{font-family:'Dancing Script',cursive;font-size:26px;text-align:right;margin-top:18px;color:var(--rosa-osc)}
+  .cerrar{
+    position:absolute;top:8px;right:12px;border:none;background:none;font-size:26px;color:var(--rosa-osc);cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== PANTALLA 1 ========== -->
+<section id="p1" class="pantalla">
+  <div id="mensaje">Tócame 💗</div>
+  <svg id="corazon" viewBox="0 0 100 90" aria-label="Corazón">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ff7aa2"/><stop offset="1" stop-color="#e0245e"/>
+      </linearGradient>
+    </defs>
+    <path d="M50 88 C20 66 2 50 2 28 C2 13 14 2 28 2 C38 2 46 8 50 16 C54 8 62 2 72 2 C86 2 98 13 98 28 C98 50 80 66 50 88Z" fill="url(#g)"/>
+    <ellipse cx="28" cy="22" rx="10" ry="6" fill="#fff" opacity=".35" transform="rotate(-30 28 22)"/>
+  </svg>
+  <div id="puntos"></div>
+  <div class="pista">toca el corazón</div>
+</section>
+
+<!-- ========== PANTALLA 2 ========== -->
+<section id="p2" class="pantalla oculta">
+  <div class="polaroid">
+    <div class="cinta"></div>
+    <img id="foto" alt="Nosotros">
+    <div class="pie" id="pieFoto"></div>
+  </div>
+
+  <div class="zona-sobre">
+    <div class="sobre" id="sobre" role="button" aria-label="Abrir carta">
+      <div class="fondo"></div>
+      <div class="carta">Para ti 💌</div>
+      <div class="frente"></div>
+      <div class="solapa"></div>
+      <div class="sello">❤️</div>
+    </div>
+    <div class="toca" id="toca">toca el sobre</div>
+  </div>
+</section>
+
+<!-- Carta abierta -->
+<div id="lectura">
+  <div class="hoja">
+    <button class="cerrar" id="cerrar" aria-label="Cerrar">×</button>
+    <h2 id="tituloCarta"></h2>
+    <p id="textoCarta"></p>
+    <div class="firma" id="firmaCarta"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ✏️  EDITA AQUÍ
+   ========================================================= */
+const CONFIG = {
+  foto: "foto.jpg",                 // pon tu foto en la misma carpeta con este nombre
+  pieFoto: "Feliz cumple 🎂",
+  tituloCarta: "¡Feliz cumpleaños, mi amor!",
+  textoCarta: `Aquí va la felicitación.
+
+Puedes escribir varios párrafos y se respetan los saltos de línea.`,
+  firma: "Te quiero 💗",
+
+  // Un mensaje por toque (el número de mensajes = toques necesarios)
+  mensajes: [
+    "Te quiero 💗",
+    "Sigue dándole para que te quiera más",
+    "Más… 😍",
+    "¡Te quiero muchísimo!",
+    "Un poquito más…",
+    "¡TE QUIERO INFINITO! 💥"
+  ]
+};
+/* ========================================================= */
+
+const $ = id => document.getElementById(id);
+const corazon = $("corazon"), mensaje = $("mensaje"), puntos = $("puntos");
+let toques = 0, bloqueado = false;
+
+// Rellenar contenido
+$("foto").src = CONFIG.foto;
+$("foto").onerror = function(){ this.onerror=null; this.src="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="#f3dfe5"/><text x="200" y="260" font-size="80" text-anchor="middle">📷</text></svg>'); };
+$("pieFoto").textContent = CONFIG.pieFoto;
+$("tituloCarta").textContent = CONFIG.tituloCarta;
+$("textoCarta").textContent = CONFIG.textoCarta;
+$("firmaCarta").textContent = CONFIG.firma;
+CONFIG.mensajes.forEach(()=>puntos.appendChild(document.createElement("span")));
+
+function vibrar(ms){ if(navigator.vibrate) navigator.vibrate(ms); }
+
+function lluviaCorazones(x, y, n){
+  const emojis = ["💗","💖","💕","❤️","💘","✨"];
+  for(let i=0;i<n;i++){
+    const s = document.createElement("span");
+    s.className = "mini";
+    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    const ang = Math.random()*Math.PI*2, dist = 80 + Math.random()*160;
+    s.style.left = x+"px"; s.style.top = y+"px";
+    s.style.setProperty("--dx", Math.cos(ang)*dist+"px");
+    s.style.setProperty("--dy", (Math.sin(ang)*dist - 80)+"px");
+    s.style.setProperty("--rot", (Math.random()*80-40)+"deg");
+    s.style.fontSize = (16 + Math.random()*20)+"px";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(), 1500);
+  }
+}
+
+corazon.addEventListener("click", e => {
+  if(bloqueado) return;
+  const total = CONFIG.mensajes.length;
+  mensaje.textContent = CONFIG.mensajes[toques];
+  mensaje.classList.remove("pop"); void mensaje.offsetWidth; mensaje.classList.add("pop");
+  puntos.children[toques].classList.add("on");
+  toques++;
+
+  // El corazón crece un poco con cada toque
+  corazon.style.width = `min(${62 + toques*4}vw, ${280 + toques*18}px)`;
+  corazon.classList.remove("golpe"); void corazon.offsetWidth; corazon.classList.add("golpe");
+  vibrar(30 + toques*10);
+  const r = corazon.getBoundingClientRect();
+  lluviaCorazones(r.left + r.width/2, r.top + r.height/2, 6 + toques*3);
+
+  if(toques >= total){
+    bloqueado = true;
+    setTimeout(()=>{
+      corazon.classList.add("explota"); vibrar([60,40,120]);
+      lluviaCorazones(innerWidth/2, innerHeight/2, 40);
+    }, 900);
+    setTimeout(irAPantalla2, 1700);
+  }
+});
+
+function irAPantalla2(){
+  $("p1").classList.add("oculta");
+  const p2 = $("p2");
+  p2.classList.remove("oculta");
+  p2.classList.add("visible");
+  setTimeout(()=>$("sobre").classList.add("tiembla"), 1600);
+}
+
+// Sobre
+const sobre = $("sobre");
+sobre.addEventListener("click", () => {
+  if(sobre.classList.contains("abierto")){ $("lectura").classList.add("visible"); return; }
+  sobre.classList.remove("tiembla");
+  sobre.classList.add("abierto");
+  $("toca").style.opacity = 0;
+  vibrar(40);
+  setTimeout(()=>{
+    $("lectura").classList.add("visible");
+    lluviaCorazones(innerWidth/2, innerHeight*0.7, 24);
+  }, 1500);
+});
+$("cerrar").addEventListener("click", e => {
+  e.stopPropagation();
+  $("lectura").classList.remove("visible");
+  $("toca").textContent = "toca el sobre para volver a leerla";
+  $("toca").style.opacity = .75;
+});
+</script>
+</body>
+</html>
