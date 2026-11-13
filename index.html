@@ -73,7 +73,7 @@
   /* ---------- PANTALLA 2 ---------- */
   #p2{justify-content:space-evenly;padding:40px 22px 36px}
 
-  .galeria{width:min(80vw,330px);opacity:0;transform:translateY(-20px)}
+  .galeria{width:min(76vw,320px,calc(52vh * .75));opacity:0;transform:translateY(-20px)}
   #p2.visible .galeria{animation:entra 1s .2s ease forwards}
   @keyframes entra{to{opacity:1;transform:none}}
   .marco{
@@ -81,7 +81,7 @@
   }
   .carrusel{
     display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
-    aspect-ratio:4/5;background:var(--marfil-2);
+    aspect-ratio:3/4;background:var(--marfil-2);
     -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
   }
   .carrusel::-webkit-scrollbar{display:none}
@@ -97,7 +97,7 @@
   /* Sobre */
   .zona-sobre{display:flex;flex-direction:column;align-items:center;gap:14px}
   .sobre{
-    position:relative;width:min(66vw,250px);aspect-ratio:3/2;cursor:pointer;perspective:900px;
+    position:relative;width:min(66vw,250px,calc(26vh * 1.5));aspect-ratio:3/2;cursor:pointer;perspective:900px;
     opacity:0;transform:translateY(30px);
   }
   #p2.visible .sobre{animation:entra 1s .7s ease forwards}
@@ -220,7 +220,7 @@
    ========================================================= */
 const CONFIG = {
   // Fotos del carrusel (en la misma carpeta que este archivo)
-  fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg"],
+  fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg"],
 
   tituloCarta: "Feliz cumpleaños, mi amor",
   textoCarta: `Aquí va la felicitación.
