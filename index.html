@@ -37,6 +37,18 @@
     font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--oro);
   }
 
+  /* ---------- MÚSICA ---------- */
+  #sonido{
+    position:fixed;top:22px;right:22px;z-index:45;width:38px;height:38px;border-radius:50%;
+    border:1px solid rgba(176,141,87,.6);background:rgba(251,248,242,.85);color:var(--oro);
+    display:none;align-items:center;justify-content:center;cursor:pointer;
+  }
+  #sonido.listo{display:flex}
+  #sonido svg{width:18px;height:18px}
+  #sonido .off{display:none}
+  #sonido.mute .on{display:none}
+  #sonido.mute .off{display:block}
+
   /* ---------- CARGA: GATITOS ---------- */
   #carga{
     position:fixed;inset:0;z-index:29;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
@@ -197,6 +209,13 @@
 </head>
 <body>
 
+<!-- Música -->
+<audio id="musica" loop preload="auto"></audio>
+<button id="sonido" aria-label="Silenciar música">
+  <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+  <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>
+</button>
+
 <!-- ========== CARGA ========== -->
 <div id="carga">
   <svg id="gatos" viewBox="0 0 200 120" aria-label="Dos gatitos dándose un beso"></svg>
@@ -264,6 +283,11 @@
    ✏️  EDITA AQUÍ
    ========================================================= */
 const CONFIG = {
+  // Canción (mp3 en la misma carpeta). Empieza al primer toque del corazón.
+  cancion: "cancion.mp3",
+  volumen: 0.6,
+  empiezaEnSegundo: 0,   // por si quieres que arranque en el estribillo
+
   // Fotos del carrusel (en la misma carpeta que este archivo)
   fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg"],
 
@@ -334,9 +358,37 @@ function lluvia(x, y, n){
   }
 }
 
+/* --- Música --- */
+const musica = $("musica"), sonido = $("sonido");
+let musicaOk = false, musicaSonando = false;
+musica.addEventListener("canplay", () => { musicaOk = true; }, { once: true });
+musica.addEventListener("error", () => { musicaOk = false; });
+musica.src = CONFIG.cancion;
+function arrancarMusica(){
+  if (musicaSonando || !musica.src) return;
+  musicaSonando = true;
+  try { musica.currentTime = CONFIG.empiezaEnSegundo; } catch(e){}
+  musica.volume = 0;
+  musica.play().then(() => {
+    sonido.classList.add("listo");
+    let v = 0;                                   // entra suave
+    const t = setInterval(() => {
+      v = Math.min(CONFIG.volumen, v + 0.03);
+      musica.volume = v;
+      if (v >= CONFIG.volumen) clearInterval(t);
+    }, 100);
+  }).catch(() => { musicaSonando = false; });   // sin archivo o bloqueado: seguimos sin música
+}
+sonido.addEventListener("click", e => {
+  e.stopPropagation();
+  musica.muted = !musica.muted;
+  sonido.classList.toggle("mute", musica.muted);
+});
+
 /* --- Corazón --- */
 corazon.addEventListener("click", () => {
   if (bloqueado) return;
+  arrancarMusica();
   const total = CONFIG.mensajes.length;
   mensaje.textContent = CONFIG.mensajes[toques];
   mensaje.classList.remove("pop"); void mensaje.offsetWidth; mensaje.classList.add("pop");
