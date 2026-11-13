@@ -373,7 +373,7 @@ function arrancarMusica(){
     sonido.classList.add("listo");
     let v = 0;                                   // entra suave
     const t = setInterval(() => {
-      v = Math.min(CONFIG.volumen, v + 0.03);
+      v = Math.min(CONFIG.volumen, v + 0.06);
       musica.volume = v;
       if (v >= CONFIG.volumen) clearInterval(t);
     }, 100);
