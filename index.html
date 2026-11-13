@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#f4ede3">
 <title>Para ti</title>
+<link rel="preload" as="image" href="foto1.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pinyon+Script&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 <style>
@@ -47,8 +48,8 @@
   @keyframes aparece{from{opacity:0;transform:translateY(8px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
 
   #corazon{
-    width:min(56vw,250px);cursor:pointer;filter:drop-shadow(0 18px 28px rgba(86,21,32,.35));
-    animation:latido 1.4s ease-in-out infinite;transition:width .4s cubic-bezier(.34,1.4,.64,1);
+    width:80px;cursor:pointer;filter:drop-shadow(0 18px 28px rgba(86,21,32,.35));
+    animation:latido 1.4s ease-in-out infinite;transition:width .5s cubic-bezier(.34,1.4,.64,1);
   }
   #corazon.golpe{animation:golpe .35s ease}
   @keyframes latido{0%,100%{transform:scale(1)}14%{transform:scale(1.06)}28%{transform:scale(.99)}42%{transform:scale(1.04)}}
@@ -56,7 +57,8 @@
   #corazon.explota{animation:explota 1s ease forwards}
   @keyframes explota{0%{transform:scale(1)}30%{transform:scale(.85)}100%{transform:scale(7);opacity:0}}
 
-  #puntos{display:flex;gap:12px;margin-top:38px}
+  #zonaCorazon{display:flex;align-items:center;justify-content:center}
+  #puntos{display:flex;gap:12px;margin-top:30px}
   #puntos span{width:7px;height:7px;border-radius:50%;border:1px solid var(--oro);transition:.35s}
   #puntos span.on{background:var(--oro);transform:scale(1.2)}
   .pista{margin-top:20px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
@@ -71,10 +73,17 @@
   }
 
   /* ---------- PANTALLA 2 ---------- */
-  #p2{justify-content:space-evenly;padding:40px 22px 36px}
+  #p2{justify-content:center;gap:clamp(18px,3.5vh,34px);padding:34px 22px 30px}
+  .titulo2{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;text-align:center;
+    font-size:clamp(22px,6.2vw,30px);line-height:1.2;color:var(--burdeos);max-width:320px;
+    opacity:0;transform:translateY(-10px);
+  }
+  .titulo2 .etiqueta{display:block;font-style:normal;margin-bottom:8px}
+  #p2.visible .titulo2{animation:entra 1s ease forwards}
 
-  .galeria{width:min(76vw,320px,calc(52vh * .75));opacity:0;transform:translateY(-20px)}
-  #p2.visible .galeria{animation:entra 1s .2s ease forwards}
+  .galeria{width:min(76vw,320px,calc(44vh * .75));opacity:0;transform:translateY(-20px)}
+  #p2.visible .galeria{animation:entra 1s .3s ease forwards}
   @keyframes entra{to{opacity:1;transform:none}}
   .marco{
     background:var(--papel);padding:10px;box-shadow:0 18px 40px rgba(58,42,38,.18),0 0 0 1px rgba(176,141,87,.25);
@@ -97,10 +106,10 @@
   /* Sobre */
   .zona-sobre{display:flex;flex-direction:column;align-items:center;gap:14px}
   .sobre{
-    position:relative;width:min(66vw,250px,calc(26vh * 1.5));aspect-ratio:3/2;cursor:pointer;perspective:900px;
+    position:relative;width:min(66vw,250px,calc(20vh * 1.5));aspect-ratio:3/2;cursor:pointer;perspective:900px;
     opacity:0;transform:translateY(30px);
   }
-  #p2.visible .sobre{animation:entra 1s .7s ease forwards}
+  #p2.visible .sobre{animation:entra 1s .6s ease forwards}
   .sobre.tiembla{animation:tiembla 3s ease-in-out infinite !important;opacity:1;transform:none}
   @keyframes tiembla{0%,82%,100%{transform:rotate(0)}86%{transform:rotate(-3deg)}90%{transform:rotate(3deg)}94%{transform:rotate(-2deg)}97%{transform:rotate(1deg)}}
 
@@ -124,13 +133,18 @@
     transition:transform .7s ease, z-index 0s .35s;
   }
   .sobre .lacre{
-    position:absolute;left:50%;top:56%;width:44px;height:44px;transform:translate(-50%,-50%);z-index:5;
+    position:absolute;left:50%;top:50%;width:40px;height:40px;transform:translate(-50%,-50%);z-index:5;
     border-radius:50%;
     background:radial-gradient(circle at 35% 30%,#a8313f,var(--burdeos) 55%,var(--burdeos-osc));
     box-shadow:0 3px 6px rgba(0,0,0,.3), inset 0 0 0 4px rgba(0,0,0,.08);
     display:flex;align-items:center;justify-content:center;transition:opacity .3s, transform .3s;
   }
   .sobre .lacre svg{width:20px;opacity:.75}
+  .sobre .destino{
+    position:absolute;left:0;right:0;bottom:5%;z-index:5;text-align:center;
+    font-family:'Pinyon Script',cursive;font-size:clamp(18px,5.4vw,24px);color:var(--burdeos);transition:opacity .3s;
+  }
+  .sobre.abierto .destino{opacity:0}
   .sobre.abierto .solapa{transform:rotateX(180deg);z-index:1}
   .sobre.abierto .lacre{opacity:0;transform:translate(-50%,-50%) scale(.6)}
   .sobre.abierto .carta{transform:translateY(-62%)}
@@ -167,6 +181,7 @@
 <section id="p1" class="pantalla">
   <div class="etiqueta">Para ti</div>
   <div id="mensaje">Tócame</div>
+  <div id="zonaCorazon">
   <svg id="corazon" viewBox="0 0 100 90" aria-label="Corazón">
     <defs>
       <linearGradient id="g" x1="0" y1="0" x2=".8" y2="1">
@@ -179,12 +194,14 @@
     <path d="M50 88 C20 66 2 50 2 28 C2 13 14 2 28 2 C38 2 46 8 50 16 C54 8 62 2 72 2 C86 2 98 13 98 28 C98 50 80 66 50 88Z" fill="url(#g)" stroke="url(#borde)" stroke-width="1.2"/>
     <path d="M14 26 C14 17 21 11 29 11" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="3" stroke-linecap="round"/>
   </svg>
+  </div>
   <div id="puntos"></div>
   <div class="pista">toca el corazón</div>
 </section>
 
 <!-- ========== PANTALLA 2 ========== -->
 <section id="p2" class="pantalla oculta">
+  <h1 class="titulo2"><span class="etiqueta">✦</span>Hoy es el cumpleaños de mi persona favorita</h1>
   <div class="galeria">
     <div class="marco"><div class="carrusel" id="carrusel"></div></div>
     <div class="dots" id="dots"></div>
@@ -194,9 +211,10 @@
   <div class="zona-sobre">
     <div class="sobre" id="sobre" role="button" aria-label="Abrir carta">
       <div class="fondo"></div>
-      <div class="carta">Para ti</div>
+      <div class="carta">Para mi amor</div>
       <div class="frente"></div>
       <div class="solapa"></div>
+      <div class="destino">Para mi amor</div>
       <div class="lacre"><svg viewBox="0 0 100 90"><path d="M50 88 C20 66 2 50 2 28 C2 13 14 2 28 2 C38 2 46 8 50 16 C54 8 62 2 72 2 C86 2 98 13 98 28 C98 50 80 66 50 88Z" fill="#e8cfa0"/></svg></div>
     </div>
     <div class="toca" id="toca">toca el sobre</div>
@@ -298,7 +316,7 @@ corazon.addEventListener("click", () => {
   puntos.children[toques].classList.add("on");
   toques++;
 
-  corazon.style.width = `min(${56 + toques*4}vw, ${250 + toques*16}px)`;
+  ajustarCorazon();
   corazon.classList.remove("golpe"); void corazon.offsetWidth; corazon.classList.add("golpe");
   vibrar(25 + toques*10);
   const r = corazon.getBoundingClientRect();
@@ -313,6 +331,23 @@ corazon.addEventListener("click", () => {
     setTimeout(irAPantalla2, 1900);
   }
 });
+
+function tamMax(){
+  // ancho máximo que cabe sin salirse (el corazón es 100x90)
+  const porAlto = (innerHeight - 330) / 0.9;
+  return Math.max(140, Math.min(innerWidth * 0.84, porAlto, 520));
+}
+function ajustarCorazon(){
+  const max = tamMax(), min = max * 0.28;
+  const w = min + (max - min) * (toques / CONFIG.mensajes.length);
+  corazon.style.width = w + "px";
+  $("zonaCorazon").style.height = (max * 0.9 * 1.08) + "px";
+}
+ajustarCorazon();
+addEventListener("resize", ajustarCorazon);
+
+// Precarga de las fotos para que estén listas al llegar
+CONFIG.fotos.forEach(f => { const i = new Image(); i.src = f; });
 
 function irAPantalla2(){
   $("p1").classList.add("oculta");
