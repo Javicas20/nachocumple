@@ -3,140 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>💗 Para ti</title>
+<meta name="theme-color" content="#f4ede3">
+<title>Para ti</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pinyon+Script&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --rosa:#ff4d7d; --rosa-osc:#e0245e; --crema:#fff6ef; --papel:#fffdf8;
-    --sobre:#f7c9d4; --sobre-osc:#eeb0c0; --texto:#5a2a3a;
+    --marfil:#f4ede3; --marfil-2:#ebe1d3; --papel:#fbf8f2;
+    --burdeos:#7a1f2b; --burdeos-osc:#561520; --oro:#b08d57; --oro-claro:#d6bc8c;
+    --tinta:#3a2a26; --gris:#8a7c72;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;overflow:hidden}
   body{
-    font-family:'Quicksand',sans-serif;color:var(--texto);
-    background:radial-gradient(circle at 50% 30%,#ffe3ec 0%,#ffc2d4 55%,#ff9fbb 100%);
+    font-family:'Jost',sans-serif;font-weight:300;color:var(--tinta);
+    background:
+      radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.7),transparent 60%),
+      radial-gradient(ellipse at 50% 110%,rgba(176,141,87,.18),transparent 60%),
+      var(--marfil);
     user-select:none;-webkit-user-select:none;
+  }
+  /* marco fino dorado */
+  body::before{
+    content:"";position:fixed;inset:12px;border:1px solid rgba(176,141,87,.45);pointer-events:none;z-index:30;
   }
   .pantalla{
     position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:24px;transition:opacity .8s ease,transform .8s ease;
+    padding:28px;transition:opacity 1s ease,transform 1s ease;
   }
-  .oculta{opacity:0;pointer-events:none;transform:scale(1.05)}
+  .oculta{opacity:0;pointer-events:none;transform:scale(1.03)}
+  .etiqueta{
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--oro);
+  }
 
-  /* ---------- PANTALLA 1: CORAZÓN ---------- */
+  /* ---------- PANTALLA 1 ---------- */
   #mensaje{
-    font-family:'Dancing Script',cursive;font-size:clamp(28px,8vw,42px);color:var(--rosa-osc);
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+    font-size:clamp(26px,7.4vw,36px);color:var(--burdeos);line-height:1.2;
     text-align:center;min-height:2.6em;display:flex;align-items:center;justify-content:center;
-    margin-bottom:28px;padding:0 10px;
+    margin:14px 0 30px;padding:0 16px;
   }
-  #mensaje.pop{animation:pop .45s ease}
-  @keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+  #mensaje.pop{animation:aparece .6s ease}
+  @keyframes aparece{from{opacity:0;transform:translateY(8px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
 
   #corazon{
-    width:min(62vw,280px);cursor:pointer;filter:drop-shadow(0 12px 24px rgba(224,36,94,.45));
-    animation:latido 1.2s ease-in-out infinite;transition:width .35s cubic-bezier(.34,1.56,.64,1);
+    width:min(56vw,250px);cursor:pointer;filter:drop-shadow(0 18px 28px rgba(86,21,32,.35));
+    animation:latido 1.4s ease-in-out infinite;transition:width .4s cubic-bezier(.34,1.4,.64,1);
   }
   #corazon.golpe{animation:golpe .35s ease}
-  @keyframes latido{0%,100%{transform:scale(1)}15%{transform:scale(1.08)}30%{transform:scale(.98)}45%{transform:scale(1.05)}}
-  @keyframes golpe{0%{transform:scale(1)}40%{transform:scale(.82)}100%{transform:scale(1)}}
-  #corazon.explota{animation:explota .9s ease forwards}
-  @keyframes explota{0%{transform:scale(1)}30%{transform:scale(.8)}100%{transform:scale(6);opacity:0}}
+  @keyframes latido{0%,100%{transform:scale(1)}14%{transform:scale(1.06)}28%{transform:scale(.99)}42%{transform:scale(1.04)}}
+  @keyframes golpe{0%{transform:scale(1)}40%{transform:scale(.86)}100%{transform:scale(1)}}
+  #corazon.explota{animation:explota 1s ease forwards}
+  @keyframes explota{0%{transform:scale(1)}30%{transform:scale(.85)}100%{transform:scale(7);opacity:0}}
 
-  #puntos{display:flex;gap:10px;margin-top:34px}
-  #puntos span{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.7);transition:.3s}
-  #puntos span.on{background:var(--rosa);transform:scale(1.25)}
-  .pista{margin-top:18px;font-size:14px;opacity:.7}
+  #puntos{display:flex;gap:12px;margin-top:38px}
+  #puntos span{width:7px;height:7px;border-radius:50%;border:1px solid var(--oro);transition:.35s}
+  #puntos span.on{background:var(--oro);transform:scale(1.2)}
+  .pista{margin-top:20px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
 
   .mini{
-    position:fixed;pointer-events:none;font-size:22px;z-index:5;
-    animation:sube 1.4s ease-out forwards;
+    position:fixed;pointer-events:none;z-index:25;line-height:1;
+    animation:sube 1.6s ease-out forwards;
   }
   @keyframes sube{
-    0%{transform:translate(0,0) scale(.4);opacity:1}
-    100%{transform:translate(var(--dx),var(--dy)) scale(1.2) rotate(var(--rot));opacity:0}
+    0%{transform:translate(0,0) scale(.3);opacity:1}
+    100%{transform:translate(var(--dx),var(--dy)) scale(1) rotate(var(--rot));opacity:0}
   }
 
-  /* ---------- PANTALLA 2: FOTO + SOBRE ---------- */
-  #p2{justify-content:space-evenly;padding:28px 20px 34px}
-  .polaroid{
-    background:#fff;padding:12px 12px 46px;border-radius:4px;transform:rotate(-3deg);
-    box-shadow:0 14px 30px rgba(90,42,58,.25);position:relative;
-    width:min(74vw,320px);
+  /* ---------- PANTALLA 2 ---------- */
+  #p2{justify-content:space-evenly;padding:40px 22px 36px}
+
+  .galeria{width:min(80vw,330px);opacity:0;transform:translateY(-20px)}
+  #p2.visible .galeria{animation:entra 1s .2s ease forwards}
+  @keyframes entra{to{opacity:1;transform:none}}
+  .marco{
+    background:var(--papel);padding:10px;box-shadow:0 18px 40px rgba(58,42,38,.18),0 0 0 1px rgba(176,141,87,.25);
   }
-  .polaroid img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;background:#f3dfe5}
-  .polaroid .pie{
-    position:absolute;left:0;right:0;bottom:8px;text-align:center;
-    font-family:'Dancing Script',cursive;font-size:26px;color:var(--rosa-osc);
+  .carrusel{
+    display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+    aspect-ratio:4/5;background:var(--marfil-2);
+    -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
   }
-  .cinta{
-    position:absolute;top:-14px;left:50%;width:90px;height:28px;transform:translateX(-50%) rotate(4deg);
-    background:rgba(255,255,255,.55);box-shadow:0 2px 4px rgba(0,0,0,.08);
+  .carrusel::-webkit-scrollbar{display:none}
+  .carrusel img{
+    flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:center;scroll-snap-stop:always;
+    display:block;pointer-events:none;
   }
-  #p2 .polaroid{opacity:0;transform:translateY(-30px) rotate(-3deg)}
-  #p2.visible .polaroid{animation:caePolaroid .9s .2s cubic-bezier(.34,1.56,.64,1) forwards}
-  @keyframes caePolaroid{to{opacity:1;transform:translateY(0) rotate(-3deg)}}
+  .dots{display:flex;justify-content:center;gap:9px;margin-top:14px}
+  .dots span{width:6px;height:6px;border-radius:50%;background:rgba(176,141,87,.3);transition:.3s}
+  .dots span.on{background:var(--oro);width:18px;border-radius:3px}
+  .desliza{text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris);margin-top:8px;transition:opacity .4s}
 
   /* Sobre */
-  .zona-sobre{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .zona-sobre{display:flex;flex-direction:column;align-items:center;gap:14px}
   .sobre{
-    position:relative;width:min(72vw,280px);aspect-ratio:3/2;cursor:pointer;perspective:900px;
-    opacity:0;transform:translateY(40px);
+    position:relative;width:min(66vw,250px);aspect-ratio:3/2;cursor:pointer;perspective:900px;
+    opacity:0;transform:translateY(30px);
   }
-  #p2.visible .sobre{animation:subeSobre .9s .6s ease forwards}
-  @keyframes subeSobre{to{opacity:1;transform:translateY(0)}}
-  .sobre.tiembla{animation:tiembla 2.4s ease-in-out infinite !important;opacity:1;transform:none}
-  @keyframes tiembla{0%,80%,100%{transform:rotate(0)}84%{transform:rotate(-4deg)}88%{transform:rotate(4deg)}92%{transform:rotate(-3deg)}96%{transform:rotate(2deg)}}
+  #p2.visible .sobre{animation:entra 1s .7s ease forwards}
+  .sobre.tiembla{animation:tiembla 3s ease-in-out infinite !important;opacity:1;transform:none}
+  @keyframes tiembla{0%,82%,100%{transform:rotate(0)}86%{transform:rotate(-3deg)}90%{transform:rotate(3deg)}94%{transform:rotate(-2deg)}97%{transform:rotate(1deg)}}
 
-  .sobre .fondo{position:absolute;inset:0;background:var(--sobre-osc);border-radius:6px;box-shadow:0 12px 26px rgba(90,42,58,.25)}
+  .sobre .fondo{position:absolute;inset:0;background:#d9cbb6;box-shadow:0 14px 30px rgba(58,42,38,.22)}
   .sobre .carta{
-    position:absolute;left:7%;right:7%;top:8%;height:84%;background:var(--papel);border-radius:4px;
-    box-shadow:0 2px 6px rgba(0,0,0,.1);z-index:2;transition:transform .9s cubic-bezier(.5,0,.3,1) .45s;
-    display:flex;align-items:flex-start;justify-content:center;padding-top:14%;
-    font-family:'Dancing Script',cursive;font-size:22px;color:var(--rosa-osc);
+    position:absolute;left:7%;right:7%;top:8%;height:84%;background:var(--papel);z-index:2;
+    box-shadow:0 1px 4px rgba(0,0,0,.1);transition:transform 1s cubic-bezier(.5,0,.3,1) .45s;
+    display:flex;align-items:flex-start;justify-content:center;padding-top:12%;
+    font-family:'Pinyon Script',cursive;font-size:24px;color:var(--burdeos);
   }
   .sobre .frente{
-    position:absolute;inset:0;border-radius:0 0 6px 6px;z-index:3;background:var(--sobre);
+    position:absolute;inset:0;z-index:3;background:#ebe0cf;
     clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%);
   }
   .sobre .frente::before,.sobre .frente::after{content:"";position:absolute;inset:0}
-  .sobre .frente::before{background:#f2bfcc;clip-path:polygon(0 0,50% 56%,0 100%)}
-  .sobre .frente::after{background:#f9d3dc;clip-path:polygon(0 100%,50% 48%,100% 100%)}
+  .sobre .frente::before{background:#e3d6c2;clip-path:polygon(0 0,50% 56%,0 100%)}
+  .sobre .frente::after{background:#f1e8da;clip-path:polygon(0 100%,50% 48%,100% 100%)}
   .sobre .solapa{
     position:absolute;left:0;right:0;top:0;height:58%;z-index:4;transform-origin:top;
-    background:#f3bccb;clip-path:polygon(0 0,100% 0,50% 100%);
-    transition:transform .6s ease, z-index 0s .3s;
+    background:#e6dac7;clip-path:polygon(0 0,100% 0,50% 100%);
+    transition:transform .7s ease, z-index 0s .35s;
   }
-  .sobre .sello{
-    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;font-size:34px;
-    transition:opacity .25s;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2));
+  .sobre .lacre{
+    position:absolute;left:50%;top:56%;width:44px;height:44px;transform:translate(-50%,-50%);z-index:5;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#a8313f,var(--burdeos) 55%,var(--burdeos-osc));
+    box-shadow:0 3px 6px rgba(0,0,0,.3), inset 0 0 0 4px rgba(0,0,0,.08);
+    display:flex;align-items:center;justify-content:center;transition:opacity .3s, transform .3s;
   }
+  .sobre .lacre svg{width:20px;opacity:.75}
   .sobre.abierto .solapa{transform:rotateX(180deg);z-index:1}
-  .sobre.abierto .sello{opacity:0}
+  .sobre.abierto .lacre{opacity:0;transform:translate(-50%,-50%) scale(.6)}
   .sobre.abierto .carta{transform:translateY(-62%)}
   .sobre.abierto{animation:none !important;opacity:1;transform:none}
-  .toca{font-size:15px;opacity:.75;transition:opacity .3s}
+  .toca{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris);transition:opacity .3s;text-align:center}
 
-  /* Carta a pantalla completa */
+  /* Carta abierta */
   #lectura{
-    position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:22px;
-    background:rgba(90,42,58,.35);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
-    opacity:0;pointer-events:none;transition:opacity .5s;
+    position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:24px;
+    background:rgba(58,42,38,.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+    opacity:0;pointer-events:none;transition:opacity .6s;
   }
   #lectura.visible{opacity:1;pointer-events:auto}
   .hoja{
-    background:var(--papel);width:min(92vw,460px);max-height:84vh;overflow-y:auto;border-radius:8px;
-    padding:34px 26px 28px;box-shadow:0 20px 50px rgba(0,0,0,.3);position:relative;
-    background-image:repeating-linear-gradient(transparent 0 33px,#f6dbe3 33px 34px);
-    transform:scale(.6) translateY(80px);transition:transform .6s cubic-bezier(.34,1.4,.64,1);
-    user-select:text;-webkit-user-select:text;
+    background:var(--papel);width:min(90vw,440px);max-height:84vh;overflow-y:auto;
+    padding:44px 30px 34px;box-shadow:0 24px 60px rgba(0,0,0,.3);position:relative;
+    outline:1px solid rgba(176,141,87,.5);outline-offset:-10px;
+    transform:scale(.7) translateY(80px);transition:transform .7s cubic-bezier(.34,1.3,.64,1);
+    user-select:text;-webkit-user-select:text;text-align:center;
   }
-  #lectura.visible .hoja{transform:scale(1) translateY(0)}
-  .hoja h2{font-family:'Dancing Script',cursive;font-size:34px;color:var(--rosa-osc);margin-bottom:14px;line-height:1.1}
-  .hoja p{font-size:17px;line-height:34px;white-space:pre-line}
-  .hoja .firma{font-family:'Dancing Script',cursive;font-size:26px;text-align:right;margin-top:18px;color:var(--rosa-osc)}
+  #lectura.visible .hoja{transform:none}
+  .hoja .orn{color:var(--oro);font-size:14px;letter-spacing:.5em;margin-bottom:14px}
+  .hoja h2{font-family:'Pinyon Script',cursive;font-weight:400;font-size:40px;color:var(--burdeos);margin-bottom:22px;line-height:1.15}
+  .hoja p{font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1.55;white-space:pre-line;text-align:left}
+  .hoja .firma{font-family:'Pinyon Script',cursive;font-size:30px;text-align:right;margin-top:24px;color:var(--burdeos)}
   .cerrar{
-    position:absolute;top:8px;right:12px;border:none;background:none;font-size:26px;color:var(--rosa-osc);cursor:pointer;
+    position:absolute;top:16px;right:20px;border:none;background:none;font-size:24px;font-weight:300;color:var(--oro);cursor:pointer;
   }
 </style>
 </head>
@@ -144,15 +165,19 @@
 
 <!-- ========== PANTALLA 1 ========== -->
 <section id="p1" class="pantalla">
-  <div id="mensaje">Tócame 💗</div>
+  <div class="etiqueta">Para ti</div>
+  <div id="mensaje">Tócame</div>
   <svg id="corazon" viewBox="0 0 100 90" aria-label="Corazón">
     <defs>
-      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#ff7aa2"/><stop offset="1" stop-color="#e0245e"/>
+      <linearGradient id="g" x1="0" y1="0" x2=".8" y2="1">
+        <stop offset="0" stop-color="#a3303e"/><stop offset=".55" stop-color="#7a1f2b"/><stop offset="1" stop-color="#4a111b"/>
+      </linearGradient>
+      <linearGradient id="borde" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#e3cc9f"/><stop offset="1" stop-color="#9c7743"/>
       </linearGradient>
     </defs>
-    <path d="M50 88 C20 66 2 50 2 28 C2 13 14 2 28 2 C38 2 46 8 50 16 C54 8 62 2 72 2 C86 2 98 13 98 28 C98 50 80 66 50 88Z" fill="url(#g)"/>
-    <ellipse cx="28" cy="22" rx="10" ry="6" fill="#fff" opacity=".35" transform="rotate(-30 28 22)"/>
+    <path d="M50 88 C20 66 2 50 2 28 C2 13 14 2 28 2 C38 2 46 8 50 16 C54 8 62 2 72 2 C86 2 98 13 98 28 C98 50 80 66 50 88Z" fill="url(#g)" stroke="url(#borde)" stroke-width="1.2"/>
+    <path d="M14 26 C14 17 21 11 29 11" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="3" stroke-linecap="round"/>
   </svg>
   <div id="puntos"></div>
   <div class="pista">toca el corazón</div>
@@ -160,19 +185,19 @@
 
 <!-- ========== PANTALLA 2 ========== -->
 <section id="p2" class="pantalla oculta">
-  <div class="polaroid">
-    <div class="cinta"></div>
-    <img id="foto" alt="Nosotros">
-    <div class="pie" id="pieFoto"></div>
+  <div class="galeria">
+    <div class="marco"><div class="carrusel" id="carrusel"></div></div>
+    <div class="dots" id="dots"></div>
+    <div class="desliza" id="desliza">desliza ←→</div>
   </div>
 
   <div class="zona-sobre">
     <div class="sobre" id="sobre" role="button" aria-label="Abrir carta">
       <div class="fondo"></div>
-      <div class="carta">Para ti 💌</div>
+      <div class="carta">Para ti</div>
       <div class="frente"></div>
       <div class="solapa"></div>
-      <div class="sello">❤️</div>
+      <div class="lacre"><svg viewBox="0 0 100 90"><path d="M50 88 C20 66 2 50 2 28 C2 13 14 2 28 2 C38 2 46 8 50 16 C54 8 62 2 72 2 C86 2 98 13 98 28 C98 50 80 66 50 88Z" fill="#e8cfa0"/></svg></div>
     </div>
     <div class="toca" id="toca">toca el sobre</div>
   </div>
@@ -182,6 +207,7 @@
 <div id="lectura">
   <div class="hoja">
     <button class="cerrar" id="cerrar" aria-label="Cerrar">×</button>
+    <div class="orn">✦ ✦ ✦</div>
     <h2 id="tituloCarta"></h2>
     <p id="textoCarta"></p>
     <div class="firma" id="firmaCarta"></div>
@@ -193,22 +219,23 @@
    ✏️  EDITA AQUÍ
    ========================================================= */
 const CONFIG = {
-  foto: "foto.jpg",                 // pon tu foto en la misma carpeta con este nombre
-  pieFoto: "Feliz cumple 🎂",
-  tituloCarta: "¡Feliz cumpleaños, mi amor!",
+  // Fotos del carrusel (en la misma carpeta que este archivo)
+  fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg"],
+
+  tituloCarta: "Feliz cumpleaños, mi amor",
   textoCarta: `Aquí va la felicitación.
 
 Puedes escribir varios párrafos y se respetan los saltos de línea.`,
-  firma: "Te quiero 💗",
+  firma: "Te quiero",
 
   // Un mensaje por toque (el número de mensajes = toques necesarios)
   mensajes: [
-    "Te quiero 💗",
+    "Te quiero",
     "Sigue dándole para que te quiera más",
-    "Más… 😍",
-    "¡Te quiero muchísimo!",
-    "Un poquito más…",
-    "¡TE QUIERO INFINITO! 💥"
+    "Un poco más…",
+    "Te quiero muchísimo",
+    "Casi…",
+    "Te quiero infinito"
   ]
 };
 /* ========================================================= */
@@ -217,56 +244,73 @@ const $ = id => document.getElementById(id);
 const corazon = $("corazon"), mensaje = $("mensaje"), puntos = $("puntos");
 let toques = 0, bloqueado = false;
 
-// Rellenar contenido
-$("foto").src = CONFIG.foto;
-$("foto").onerror = function(){ this.onerror=null; this.src="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="#f3dfe5"/><text x="200" y="260" font-size="80" text-anchor="middle">📷</text></svg>'); };
-$("pieFoto").textContent = CONFIG.pieFoto;
+/* --- Carrusel --- */
+const carrusel = $("carrusel"), dots = $("dots");
+const placeholder = n => "data:image/svg+xml," + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="#ebe1d3"/><text x="200" y="262" font-family="Georgia,serif" font-style="italic" font-size="34" fill="#b08d57" text-anchor="middle">Foto ${n}</text></svg>`);
+CONFIG.fotos.forEach((src, i) => {
+  const img = document.createElement("img");
+  img.src = src; img.alt = "Foto " + (i+1); img.draggable = false;
+  img.onerror = function(){ this.onerror = null; this.src = placeholder(i+1); };
+  carrusel.appendChild(img);
+  dots.appendChild(document.createElement("span"));
+});
+dots.children[0].classList.add("on");
+if (CONFIG.fotos.length < 2) { dots.style.display = "none"; $("desliza").style.display = "none"; }
+carrusel.addEventListener("scroll", () => {
+  const i = Math.round(carrusel.scrollLeft / carrusel.clientWidth);
+  [...dots.children].forEach((d, j) => d.classList.toggle("on", j === i));
+  if (i > 0) $("desliza").style.opacity = 0;
+}, { passive: true });
+
+/* --- Textos --- */
 $("tituloCarta").textContent = CONFIG.tituloCarta;
 $("textoCarta").textContent = CONFIG.textoCarta;
 $("firmaCarta").textContent = CONFIG.firma;
-CONFIG.mensajes.forEach(()=>puntos.appendChild(document.createElement("span")));
+CONFIG.mensajes.forEach(() => puntos.appendChild(document.createElement("span")));
 
-function vibrar(ms){ if(navigator.vibrate) navigator.vibrate(ms); }
+function vibrar(ms){ if (navigator.vibrate) navigator.vibrate(ms); }
 
-function lluviaCorazones(x, y, n){
-  const emojis = ["💗","💖","💕","❤️","💘","✨"];
-  for(let i=0;i<n;i++){
+function lluvia(x, y, n){
+  const colores = ["#7a1f2b", "#a3303e", "#b08d57", "#d6bc8c"];
+  for (let i = 0; i < n; i++){
     const s = document.createElement("span");
     s.className = "mini";
-    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    const ang = Math.random()*Math.PI*2, dist = 80 + Math.random()*160;
-    s.style.left = x+"px"; s.style.top = y+"px";
-    s.style.setProperty("--dx", Math.cos(ang)*dist+"px");
-    s.style.setProperty("--dy", (Math.sin(ang)*dist - 80)+"px");
-    s.style.setProperty("--rot", (Math.random()*80-40)+"deg");
-    s.style.fontSize = (16 + Math.random()*20)+"px";
+    s.textContent = Math.random() < .7 ? "♥" : "✦";
+    s.style.color = colores[Math.floor(Math.random()*colores.length)];
+    const ang = Math.random()*Math.PI*2, dist = 70 + Math.random()*150;
+    s.style.left = x + "px"; s.style.top = y + "px";
+    s.style.setProperty("--dx", Math.cos(ang)*dist + "px");
+    s.style.setProperty("--dy", (Math.sin(ang)*dist - 70) + "px");
+    s.style.setProperty("--rot", (Math.random()*60-30) + "deg");
+    s.style.fontSize = (12 + Math.random()*16) + "px";
     document.body.appendChild(s);
-    setTimeout(()=>s.remove(), 1500);
+    setTimeout(() => s.remove(), 1700);
   }
 }
 
-corazon.addEventListener("click", e => {
-  if(bloqueado) return;
+/* --- Corazón --- */
+corazon.addEventListener("click", () => {
+  if (bloqueado) return;
   const total = CONFIG.mensajes.length;
   mensaje.textContent = CONFIG.mensajes[toques];
   mensaje.classList.remove("pop"); void mensaje.offsetWidth; mensaje.classList.add("pop");
   puntos.children[toques].classList.add("on");
   toques++;
 
-  // El corazón crece un poco con cada toque
-  corazon.style.width = `min(${62 + toques*4}vw, ${280 + toques*18}px)`;
+  corazon.style.width = `min(${56 + toques*4}vw, ${250 + toques*16}px)`;
   corazon.classList.remove("golpe"); void corazon.offsetWidth; corazon.classList.add("golpe");
-  vibrar(30 + toques*10);
+  vibrar(25 + toques*10);
   const r = corazon.getBoundingClientRect();
-  lluviaCorazones(r.left + r.width/2, r.top + r.height/2, 6 + toques*3);
+  lluvia(r.left + r.width/2, r.top + r.height/2, 5 + toques*3);
 
-  if(toques >= total){
+  if (toques >= total){
     bloqueado = true;
-    setTimeout(()=>{
+    setTimeout(() => {
       corazon.classList.add("explota"); vibrar([60,40,120]);
-      lluviaCorazones(innerWidth/2, innerHeight/2, 40);
-    }, 900);
-    setTimeout(irAPantalla2, 1700);
+      lluvia(innerWidth/2, innerHeight/2, 36);
+    }, 1000);
+    setTimeout(irAPantalla2, 1900);
   }
 });
 
@@ -275,27 +319,27 @@ function irAPantalla2(){
   const p2 = $("p2");
   p2.classList.remove("oculta");
   p2.classList.add("visible");
-  setTimeout(()=>$("sobre").classList.add("tiembla"), 1600);
+  setTimeout(() => $("sobre").classList.add("tiembla"), 1800);
 }
 
-// Sobre
+/* --- Sobre --- */
 const sobre = $("sobre");
 sobre.addEventListener("click", () => {
-  if(sobre.classList.contains("abierto")){ $("lectura").classList.add("visible"); return; }
+  if (sobre.classList.contains("abierto")) { $("lectura").classList.add("visible"); return; }
   sobre.classList.remove("tiembla");
   sobre.classList.add("abierto");
   $("toca").style.opacity = 0;
   vibrar(40);
-  setTimeout(()=>{
+  setTimeout(() => {
     $("lectura").classList.add("visible");
-    lluviaCorazones(innerWidth/2, innerHeight*0.7, 24);
-  }, 1500);
+    lluvia(innerWidth/2, innerHeight*0.7, 20);
+  }, 1600);
 });
 $("cerrar").addEventListener("click", e => {
   e.stopPropagation();
   $("lectura").classList.remove("visible");
-  $("toca").textContent = "toca el sobre para volver a leerla";
-  $("toca").style.opacity = .75;
+  $("toca").textContent = "toca el sobre para volver a leer";
+  $("toca").style.opacity = 1;
 });
 </script>
 </body>
